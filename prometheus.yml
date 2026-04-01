@@ -1,0 +1,9 @@
+# данный файл конфига передается в docker-контейнер (монтирование тома)
+global:
+  scrape_interval: 5s # Как часто забирать метрики
+
+scrape_configs:
+  - job_name: 'test_task_1_spring_boot'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080'] # host.docker.internal позволяет контейнеру видеть мой мак

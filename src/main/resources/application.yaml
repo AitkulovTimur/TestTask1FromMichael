@@ -1,3 +1,25 @@
 spring:
   application:
     name: test-task-1
+  kafka:
+    consumer:
+      group-id: test-task-1-group
+
+management:
+  endpoints:
+    web:
+      exposure:
+#        я так понял по умолчанию prometheus скрыт, поэтому так прописываем
+        include: health,info,prometheus
+  metrics:
+    tags:
+      application: {spring.application.name}
+
+id-processor:
+  batch-size: 100
+  kafka:
+    topic-name: id-processor-topic
+
+logging:
+  level:
+    org.springframework.kafka: DEBUG
