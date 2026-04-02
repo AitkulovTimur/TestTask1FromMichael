@@ -12,4 +12,7 @@ public final class VariablesHolder {
 
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
+
+    @Value("${spring.application.name}")
+    private String appName;
 }

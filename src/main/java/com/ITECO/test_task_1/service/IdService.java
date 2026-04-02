@@ -3,7 +3,8 @@ package com.ITECO.test_task_1.service;
 import com.ITECO.test_task_1.common.VariablesHolder;
 import com.ITECO.test_task_1.service.kafka.IdKafkaReceiver;
 import com.ITECO.test_task_1.service.kafka.IdKafkaSender;
-import lombok.RequiredArgsConstructor;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,20 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class IdService {
     private final LinkedBlockingQueue<String> ids = new LinkedBlockingQueue<>();
+
     private final IdKafkaSender idKafkaSender;
     private final VariablesHolder variablesHolder;
     private final IdKafkaReceiver idKafkaReceiver;
+
+    public IdService(MeterRegistry registry, IdKafkaSender idKafkaSender, VariablesHolder variablesHolder, IdKafkaReceiver idKafkaReceiver) {
+        this.idKafkaSender = idKafkaSender;
+        this.variablesHolder = variablesHolder;
+        this.idKafkaReceiver = idKafkaReceiver;
+
+        Gauge.builder("id_service_queue_size", ids, LinkedBlockingQueue::size).register(registry);
+    }
 
     /**
      * Adds an ID to the collection.

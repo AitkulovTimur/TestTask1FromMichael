@@ -12,6 +12,9 @@ management:
 #        я так понял по умолчанию prometheus скрыт, поэтому так прописываем
         include: health,info,prometheus
   metrics:
+    kafka:
+      consumer:
+        enabled: true
     tags:
       application: {spring.application.name}
 

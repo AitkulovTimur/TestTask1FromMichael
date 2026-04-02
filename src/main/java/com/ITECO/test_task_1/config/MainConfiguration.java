@@ -1,11 +1,14 @@
 package com.ITECO.test_task_1.config;
 
+import com.ITECO.test_task_1.common.VariablesHolder;
 import com.ITECO.test_task_1.common.dto.CommonKafkaRecord;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.boot.micrometer.metrics.autoconfigure.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -27,7 +30,7 @@ import java.util.Map;
 @EnableKafka
 @RequiredArgsConstructor
 public class MainConfiguration {
-//    private final VariablesHolder variablesHolder;
+    private final VariablesHolder variablesHolder;
 
     @Bean
     public ProducerFactory<String, CommonKafkaRecord> producerFactory() {
@@ -74,5 +77,10 @@ public class MainConfiguration {
                 new StringDeserializer(),
                 deserializer
         );
+    }
+
+    @Bean
+    MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
+        return registry -> registry.config().commonTags("application", variablesHolder.getAppName());
     }
 }
