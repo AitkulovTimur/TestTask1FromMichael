@@ -30,6 +30,7 @@
 * **Kafka Consumer Lag:** Очередь необработанных сообщений в топике.
 * **P95 Sent Time:** Время отправки 95% батчей (Latency).
 * **JVM Resources:** Мониторинг `CodeCache` (segmented), Load Average и использования CPU.
+* **Бизнес-метрики**, связанные с обработкой батча
 
 ---
 
